@@ -274,7 +274,7 @@ class AuditListener
         ]);
     }
 
-    protected function dissociate(EntityManager $em, ?object $source, ?object $target, string|int $id, array $mapping): void
+    protected function dissociate(EntityManager $em, ?object $source, ?object $target, string|int|null $id, array $mapping): void
     {
         $this->audit($em, [
             'source' => $this->assoc($em, $source),
