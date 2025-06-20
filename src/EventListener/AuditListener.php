@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ManyToManyOwningSideMapping;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Role\SwitchUserRole;
@@ -242,11 +243,13 @@ class AuditListener
 
         foreach ($this->associated as $entry) {
             list($source, $target, $mapping) = $entry;
+            $mapping = $mapping instanceof ManyToManyOwningSideMapping ? $mapping->toArray() : $mapping;
             $this->associate($this->entityManager, $source, $target, $mapping);
         }
 
         foreach ($this->dissociated as $entry) {
             list($source, $target, $id, $mapping) = $entry;
+            $mapping = $mapping instanceof ManyToManyOwningSideMapping ? $mapping->toArray() : $mapping;
             $this->dissociate($this->entityManager, $source, $target, $id, $mapping);
         }
 
